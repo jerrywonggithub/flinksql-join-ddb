@@ -1,0 +1,90 @@
+/home/ec2-user/kafka/bin/kafka-topics.sh --create --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --replication-factor 3 --partitions 3 --topic DemoImmersiondayTopic
+
+
+
+/home/ec2-user/kafka/bin/kafka-topics.sh --create --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --replication-factor 3 --partitions 3 --topic Departments_Agg
+
+
+
+/home/ec2-user/kafka/bin/kafka-topics.sh --create --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --replication-factor 3 --partitions 3 --topic ClickEvents_UserId_Agg_Result
+
+
+
+
+/home/ec2-user/kafka/bin/kafka-topics.sh --create --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --replication-factor 3 --partitions 3 --topic User_Sessions_Aggregates_With_Order_Checkout
+
+
+/home/ec2-user/kafka/bin/kafka-topics.sh --create --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --replication-factor 3 --partitions 3 --topic flinkjoinddbtopic
+
+/home/ec2-user/kafka/bin/kafka-topics.sh --delete --zookeeper z-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181,z-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:2181 --topic flinkjoinddbtopic
+
+cd /tmp/kafka
+java -jar KafkaClickstreamClient-1.0-SNAPSHOT.jar -t DemoImmersiondayTopic -pfp /tmp/kafka/producer.properties_msk -nt 8 -rf 300
+
+
+
+
+
+
+/home/ec2-user/kafka/bin/kafka-console-consumer.sh --bootstrap-server b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092 --topic Departments_Agg --from-beginning
+
+/home/ec2-user/kafka/bin/kafka-console-consumer.sh --bootstrap-server b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092 --topic ClickEvents_UserId_Agg_Result --from-beginning
+
+/home/ec2-user/kafka/bin/kafka-console-consumer.sh --bootstrap-server b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092 --topic User_Sessions_Aggregates_With_Order_Checkout --from-beginning
+
+/home/ec2-user/kafka/bin/kafka-console-consumer.sh --bootstrap-server b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092 --topic flinkjoinddbtopic --from-beginning
+
+Host estunnel  
+ HostName ec2-34-221-220-53.us-west-2.compute.amazonaws.com  
+ User ec2-user  
+ IdentitiesOnly yes  
+ IdentityFile /Users/jxhuang/Downloads/LabKey-Oregon.pem
+ LocalForward 9200 vpc-mskflin-elasti-v0e1fw5iabo5-q67i6gb765prvb7j3qnmqz7gvq.us-west-2.es.amazonaws.com:443
+
+
+
+
+https://127.0.0.1:9200/_plugin/kibana/
+
+
+
+
+
+%flink.ssql(type=update)
+CREATE TABLE click_stream_ods (
+    `user_ip` STRING NOT NULL,
+    `ts` STRING NOT NULL,
+    `userid` STRING NOT NULL,
+    `country` STRING,
+    `event_type` STRING,
+    `userid` INT NOT NULL,
+    `devicetype` STRING NOT NULL,
+    `producttype` STRING NOT NULL,
+    `proctime` as PROCTIME()
+)WITH (
+    'connector' = 'kafka',
+    'topic' = 'flinkjoinddbtopic',
+    'properties.bootstrap.servers' = 'b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092',
+    'scan.startup.mode' = 'latest-offset',
+    'format' = 'json',
+    'json.fail-on-missing-field' = 'false',
+    'json.ignore-parse-errors' = 'true'
+);
+
+
+
+
+datafaker kafka b-2.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-1.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092,b-3.mskclustermskflinkcfm.t3her9.c14.kafka.us-west-2.amazonaws.com:9092 flinkjoinddbtopic 1000 --interval 1 --metaj meta.txt --outprint
+
+
+
+
+insert into ddbImmertiondayTable value{'userid': '20', 'priviliege': 'standard', 'gender': 'female'}
+insert into ddbImmertiondayTable value{'userid': '30', 'priviliege': 'premium', 'gender': 'male'}
+insert into ddbImmertiondayTable value{'userid': '40', 'priviliege': 'vip', 'gender': 'male'}
+insert into ddbImmertiondayTable value{'userid': '50', 'priviliege': 'standard', 'gender': 'male'}
+insert into ddbImmertiondayTable value{'userid': '60', 'priviliege': 'standard', 'gender': 'female'}
+insert into ddbImmertiondayTable value{'userid': '70', 'priviliege': 'standard', 'gender': 'female'}
+insert into ddbImmertiondayTable value{'userid': '80', 'priviliege': 'vip', 'gender': 'male'}
+insert into ddbImmertiondayTable value{'userid': '90', 'priviliege': 'standard', 'gender': 'male'}
+insert into ddbImmertiondayTable value{'userid': '100', 'priviliege': 'premium', 'gender': 'female'}

@@ -1,0 +1,1 @@
+{"user_ip": "[:ipv4]","ts": "[:datetime(1,%Y-%m-%d %H:%m)]","userid": "[:random_int]","country_code": "[:country_code]","event_type": "[:enum(home_page, product_catalog, add_to_cart, product_detail)]","devicetype": "[:enum(tablet, pc, iphone, android)]","producttype": "[:enum(Airpods, iPhone, Keyboard]"}
